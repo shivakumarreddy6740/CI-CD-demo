@@ -30,6 +30,24 @@ pipeline {
         bat 'docker build -t oshivakumarreddy/order:1.0 .'
       }
     }
+    stage('Kube Auth Test') {
+  steps {
+    bat '''
+      set KUBECONFIG=C:\\ProgramData\\Jenkins\\.kube\\config
+      kubectl get nodes
+    '''
+  }
+}
+    stage('Deploy to Kubernetes') {
+  steps {
+    bat '''
+      set KUBECONFIG=C:\\ProgramData\\Jenkins\\.kube\\config
+      kubectl apply -f deployment.yaml
+    '''
+  }
+}
+
+
 
     stage('Push Docker Image') {
       steps {
