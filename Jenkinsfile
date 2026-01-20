@@ -6,7 +6,6 @@ pipeline {
     stage('Checkout Code') {
       steps {
         git branch: 'main', url: 'https://github.com/shivakumarreddy6740/CI-CD-demo.git'
-
       }
     }
 
@@ -16,9 +15,18 @@ pipeline {
       }
     }
 
-    stage('Push Image') {
+    stage('Docker Login & Push') {
       steps {
-        bat 'docker push oshivakumarreddy/order:1.0'
+        withCredentials([usernamePassword(
+          credentialsId: 'dockerhub-creds',
+          usernameVariable: 'DOCKER_USER',
+          passwordVariable: 'DOCKER_PASS'
+        )]) {
+          bat '''
+            docker login -u %DOCKER_USER% -p %DOCKER_PASS%
+            docker push oshivakumarreddy/order:1.0
+          '''
+        }
       }
     }
 
