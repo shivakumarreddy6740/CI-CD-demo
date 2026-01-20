@@ -54,11 +54,5 @@ pipeline {
         bat 'docker push oshivakumarreddy/order:1.0'
       }
     }
-
-    stage('Deploy to Kubernetes') {
-      steps {
-        bat 'kubectl apply -f deployment.yaml'
-      }
-    }
   }
 }
